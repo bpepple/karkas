@@ -6,6 +6,9 @@ authors = ["Brian Pepple <bpepple@metron.cloud>"]
 license = "GPL-3.0-or-later"
 maintainers = ["Brian Pepple <bpepple@metron.cloud>"]
 readme = "README.md"
+packages = [{ include = "karkas" }]
+exclude = ["*/**/*~"]
+include = [{ path = "tests", format = "sdist" }]
 keywords = ["comics", "comic", "metadata", "tagging", "tagger"]
 
 [tool.poetry.dependencies]
@@ -18,13 +21,27 @@ pre-commit = "^3.7.1"
 ruff = "^0.5.2"
 pytest = "^8.2.2"
 pytest-cov = "^5.0.0"
+tox = "^4.16.0"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.poetry.urls]
+"Homepage" = "https://github.com/bpepple/karkas"
+"Bug Tracker" = "https://github.com/bpepple/karkas/issues"
+
 [tool.poetry.scripts]
 karkas = "karkas.cli:main"
+
+[tool.ruff]
+extend-exclude = ["typings"]
+line-length = 95
+show-fixes = true
+target-version = "py310"
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
 
 [tool.coverage.report]
 show_missing = true
