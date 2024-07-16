@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "karkas"
+version = "0.1.0"
+description = "A project to update a user's ComicInfo.xml files Format element to the new values from Metron."
+authors = ["Brian Pepple <bpepple@metron.cloud>"]
+license = "GPL-3.0-or-later"
+maintainers = ["Brian Pepple <bpepple@metron.cloud>"]
+readme = "README.md"
+keywords = ["comics", "comic", "metadata", "tagging", "tagger"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
