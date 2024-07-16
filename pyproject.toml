@@ -10,11 +10,17 @@ keywords = ["comics", "comic", "metadata", "tagging", "tagger"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+darkseid = "^4.0.5"
+tqdm = "^4.66.4"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.7.1"
 ruff = "^0.5.2"
+pytest = "^8.2.2"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+karkas = "karkas.cli:main"
