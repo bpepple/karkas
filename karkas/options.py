@@ -20,9 +20,7 @@ def make_parser() -> argparse.ArgumentParser:
         description="Read in a comic or set of comics, and return the result.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument(
-        "path", help="Path of a comic or a folder of comics.", type=Path
-    )
+    parser.add_argument("path", help="Path of a comic or a folder of comics.", type=Path)
     parser.add_argument(
         "--version",
         action="version",
