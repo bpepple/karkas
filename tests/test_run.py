@@ -141,16 +141,87 @@ testdata = [
 
 
 @pytest.mark.parametrize(
-    "comic_list,seems_to_be_a_comic_archive,has_metadata,read_metadata,write_metadata,expected_count",
-    testdata,
+    "comic_list, seems_to_be_a_comic_archive, has_metadata, read_metadata, write_metadata, expected_count",
+    [
+        # Happy path tests
+        (
+            ["/path/to/comic1.cbz"],
+            True,
+            True,
+            MagicMock(series=MagicMock(format="Ongoing Series")),
+            True,
+            1,
+        ),
+        (
+            ["/path/to/comic2.cbz"],
+            True,
+            True,
+            MagicMock(series=MagicMock(format="Cancelled Series")),
+            True,
+            1,
+        ),
+        (
+            ["/path/to/comic3.cbz"],
+            True,
+            True,
+            MagicMock(series=MagicMock(format="Limited Series")),
+            True,
+            1,
+        ),
+        # Edge cases
+        ([], True, True, MagicMock(series=MagicMock(format="Ongoing Series")), True, 0),
+        (
+            ["/path/to/comic4.cbz"],
+            False,
+            True,
+            MagicMock(series=MagicMock(format="Ongoing Series")),
+            True,
+            0,
+        ),
+        (
+            ["/path/to/comic5.cbz"],
+            True,
+            False,
+            MagicMock(series=MagicMock(format="Ongoing Series")),
+            True,
+            0,
+        ),
+        (
+            ["/path/to/comic6.cbz"],
+            True,
+            True,
+            MagicMock(series=MagicMock(format="Single Issue")),
+            True,
+            0,
+        ),
+        # Error cases
+        (
+            ["/path/to/comic7.cbz"],
+            True,
+            True,
+            MagicMock(series=MagicMock(format="Ongoing Series")),
+            False,
+            0,
+        ),
+        (
+            ["/path/to/comic8.cbz"],
+            True,
+            True,
+            MagicMock(series=MagicMock(format="Cancelled Series")),
+            False,
+            0,
+        ),
+    ],
     ids=[
-        "happy_path_single_update",
-        "happy_path_single_update_cancelled",
-        "happy_path_no_update_needed",
-        "empty_list",
-        "not_a_comic_archive",
-        "no_metadata",
-        "write_metadata_failure",
+        "happy_path_ongoing_series",
+        "happy_path_cancelled_series",
+        "happy_path_limited_series",
+        "edge_case_empty_list",
+        "edge_case_not_comic_archive",
+        "edge_case_no_metadata",
+        "edge_case_single_issue",
+        "error_case_write_metadata_fail_ongoing",
+        "error_case_write_metadata_fail_cancelled",
     ],
 )
 def test_update_metadata(
@@ -161,9 +232,10 @@ def test_update_metadata(
     write_metadata,
     expected_count,
 ):
+    # Arrange
+    runner = Runner(Path("/tmp"))
     comic_list = [Path(p) for p in comic_list]
 
-    # Arrange
     with patch("karkas.run.Comic") as MockComic:
         mock_comic_instance = MockComic.return_value
         mock_comic_instance.seems_to_be_a_comic_archive.return_value = (
@@ -174,8 +246,29 @@ def test_update_metadata(
         mock_comic_instance.write_metadata.return_value = write_metadata
 
         # Act
-        run = Runner(Path("/tmp"))
-        result = run._update_metadata(comic_list)
+        result = runner._update_metadata(comic_list)
 
         # Assert
         assert result == expected_count
+
+
+@pytest.mark.parametrize(
+    "txt, expected",
+    [
+        ("Annual Series", "Annual"),  # happy path
+        ("Limited", "Limited"),  # single word
+        ("", ""),  # empty string
+    ],
+    ids=[
+        "happy_path",
+        "single_word",
+        "empty_string",
+    ],
+)
+def test_remove_word_series(txt, expected):
+    # Act
+    runner = Runner(Path("/tmp"))
+    result = runner._remove_word_series(txt)
+
+    # Assert
+    assert result == expected
