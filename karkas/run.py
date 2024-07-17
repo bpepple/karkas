@@ -43,7 +43,7 @@ class Runner:
             md = comic.read_metadata()
             series_format_lower = md.series.format.lower()
 
-            if any(format_ in series_format_lower for format_ in old_formats_set):
+            if any(fmt in series_format_lower for fmt in old_formats_set):
                 md.series.format = "Single Issue"
                 if comic.write_metadata(md):
                     change_count += 1
