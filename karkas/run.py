@@ -20,6 +20,7 @@ class Runner:
 
     def __init__(self: Runner, path: Path) -> None:
         self._path = path
+        self._fails: list[str] = []
 
     @staticmethod
     def _remove_word_series(txt: str) -> str:
@@ -72,6 +73,8 @@ class Runner:
 
             if comic.write_metadata(md):
                 change_count += 1
+            else:
+                self._fails.append(str(comic.path))
 
         return change_count
 
@@ -85,3 +88,7 @@ class Runner:
         comic_list = get_recursive_filelist([self._path])
         result_count = self._update_metadata(comic_list)
         print(f"Updated {result_count} comics.")
+        if self._fails:
+            print(f"Failed to write changes to the following {len(self._fails)} comics.")
+            for fail in self._fails:
+                print(fail)
