@@ -22,30 +22,12 @@ class Runner:
         self._path = path
         self._fails: list[str] = []
 
-    @staticmethod
-    def _remove_word_series(txt: str) -> str:
-        """
-        Summary:
-        Removes word series from the input text.
-
-        Explanation:
-        This static method takes a string as input, splits it into words, and returns the first word.
-        It is used to the word 'Series'.
-
-        Args:
-            txt (str): The input text from which the word series will be removed.
-
-        Returns:
-            str: The first word from the input text.
-        """
-        return txt.partition(" ")[0] if txt else txt
-
     def _update_metadata(self: Runner, comic_list: list[Path]) -> int:
         """
-        Update metadata of comics in the provided list.
+        Updates metadata for comics in the given list based on specific conditions.
 
         Args:
-            comic_list: List of paths to comics.
+            comic_list: A list of Path objects representing the comics to update metadata for.
 
         Returns:
             int: The number of comics whose metadata was successfully updated.
@@ -63,11 +45,8 @@ class Runner:
 
             if series_format_lower in old_formats_set:
                 md.series.format = "Single Issue"
-            elif "series" in series_format_lower:
-                if fixed_format := self._remove_word_series(md.series.format):
-                    md.series.format = fixed_format
-                else:
-                    continue
+            elif "annual" in series_format_lower:
+                md.series.format = "Annual"
             else:
                 continue
 

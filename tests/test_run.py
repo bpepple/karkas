@@ -164,7 +164,7 @@ testdata = [
             ["/path/to/comic3.cbz"],
             True,
             True,
-            MagicMock(series=MagicMock(format="Limited Series")),
+            MagicMock(series=MagicMock(format="Annual Series")),
             True,
             1,
         ),
@@ -215,7 +215,7 @@ testdata = [
     ids=[
         "happy_path_ongoing_series",
         "happy_path_cancelled_series",
-        "happy_path_limited_series",
+        "happy_path_annual_series",
         "edge_case_empty_list",
         "edge_case_not_comic_archive",
         "edge_case_no_metadata",
@@ -250,25 +250,3 @@ def test_update_metadata(
 
         # Assert
         assert result == expected_count
-
-
-@pytest.mark.parametrize(
-    "txt, expected",
-    [
-        ("Annual Series", "Annual"),  # happy path
-        ("Limited", "Limited"),  # single word
-        ("", ""),  # empty string
-    ],
-    ids=[
-        "happy_path",
-        "single_word",
-        "empty_string",
-    ],
-)
-def test_remove_word_series(txt, expected):
-    # Act
-    runner = Runner(Path("/tmp"))
-    result = runner._remove_word_series(txt)
-
-    # Assert
-    assert result == expected
