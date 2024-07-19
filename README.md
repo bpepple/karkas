@@ -10,8 +10,10 @@ pipx install karkas-1.0.0-py3-none-any.whl
 
 ## Purpose
 
-Metron has recently consolidated the `Cancelled Series` and `Ongoing` formats to `Single Issue`.
-This program simple update's the comic's ComicInfo.xml file for the change.
+Metron has recently consolidated the `Cancelled Series` and `Ongoing` formats to `Single Issue` and changes
+`Annual Series` to `Annual`.
+
+This program simply update's a comic's ComicInfo.xml file for these changes.
 
 ## Usage
 
