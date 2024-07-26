@@ -145,6 +145,14 @@ testdata = [
     [
         # Happy path tests
         (
+            ["/path/to/comic3.cbz"],
+            True,
+            True,
+            MagicMock(series=MagicMock(format="Hard Cover")),
+            True,
+            1,
+        ),
+        (
             ["/path/to/comic1.cbz"],
             True,
             True,
@@ -213,6 +221,7 @@ testdata = [
         ),
     ],
     ids=[
+        "happy_path_hard_cover",
         "happy_path_ongoing_series",
         "happy_path_cancelled_series",
         "happy_path_annual_series",
