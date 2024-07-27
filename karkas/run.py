@@ -47,6 +47,8 @@ class Runner:
                 md.series.format = "Single Issue"
             elif "annual" in series_format_lower:
                 md.series.format = "Annual"
+            elif "hard cover" in series_format_lower:
+                md.series.format = "Hardcover"
             else:
                 continue
 
