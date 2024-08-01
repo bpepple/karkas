@@ -5,7 +5,7 @@ A small project to update a comic's Comic.xml Format element to the new values u
 ## Installation
 
 ```bash
-pipx install karkas-1.1.0-py3-none-any.whl
+pipx install karkas-1.2.0-py3-none-any.whl
 ```
 
 ## Purpose
