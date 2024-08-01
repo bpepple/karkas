@@ -268,3 +268,39 @@ def test_update_metadata(
 
         # Assert
         assert result == expected_count
+
+
+@pytest.mark.parametrize(
+    "comic_list, result_count, fails, expected_output",
+    [
+        # Happy path
+        (["comic1.cbz", "comic2.cbz"], 2, [], "Updated 2 comics.\n"),
+        # Edge case: no comics
+        ([], 0, [], "Updated 0 comics.\n"),
+        # Error case: some comics fail to update
+        (
+            ["comic1.cbz", "comic2.cbz"],
+            1,
+            ["comic2.cbz"],
+            "Updated 1 comics.\nFailed to write changes to the following 1 comics.\ncomic2.cbz\n",
+        ),
+    ],
+    ids=[
+        "happy_path_multiple_comics",
+        "edge_case_no_comics",
+        "error_case_some_failures",
+    ],
+)
+def test_run(comic_list, result_count, fails, expected_output, capsys):
+    # Arrange
+    runner = Runner(Path("/some/path"))
+    runner._update_metadata = MagicMock(return_value=result_count)
+    runner._fails = fails
+
+    with patch("darkseid.utils.get_recursive_filelist", return_value=comic_list):
+        # Act
+        runner.run()
+
+        # Assert
+        captured = capsys.readouterr()
+        assert captured.out == expected_output
