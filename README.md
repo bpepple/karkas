@@ -15,6 +15,7 @@ file for these changes. These changes are as follows:
 - Change `Cancelled Series` and `Ongoing` to `Single Issue`
 - Change `Annual Series` to `Annual`
 - Change `Hard Cover` to `Hardcover`
+- Change `Digital Chapters` to `Digital Chapter`
 
 ## Usage
 
