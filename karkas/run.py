@@ -34,6 +34,11 @@ class Runner:
         """
         change_count = 0
         old_formats_set = {"cancelled series", "ongoing series"}
+        format_mapping = {
+            "annual": "Annual",
+            "hard cover": "Hardcover",
+            "digital chapters": "Digital Chapter",
+        }
 
         for item in tqdm(comic_list):
             comic = Comic(item)
@@ -45,12 +50,13 @@ class Runner:
 
             if series_format_lower in old_formats_set:
                 md.series.format = "Single Issue"
-            elif "annual" in series_format_lower:
-                md.series.format = "Annual"
-            elif "hard cover" in series_format_lower:
-                md.series.format = "Hardcover"
             else:
-                continue
+                for key, value in format_mapping.items():
+                    if key in series_format_lower:
+                        md.series.format = value
+                        break
+                else:
+                    continue
 
             if comic.write_metadata(md):
                 change_count += 1
